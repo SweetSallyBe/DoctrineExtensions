@@ -6,6 +6,6 @@ class Test
 {
     public function test()
     {
-        dd(__FILE__ . ' - regel: ' . __LINE__, 'go');
+        dd(__FILE__ . ' - regel: ' . __LINE__, 'gooo');
     }
 }
