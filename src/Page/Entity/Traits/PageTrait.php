@@ -20,6 +20,11 @@ trait PageTrait
         $this->translations = new ArrayCollection();
     }
 
+    public function getPage(): self
+    {
+        return $this;
+    }
+
     public function getTranslationForLocale(string $locale): ?PageTranslationInterface
     {
         foreach ($this->getTranslations() as $translation) {
