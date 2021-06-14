@@ -2,6 +2,9 @@
 
 namespace SweetSallyBe\DoctrineExtensions\Page\Entity\Traits;
 
+use App\Entity\PageBlock;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use SweetSallyBe\DoctrineExtensions\Page\Entity\Interfaces\PageInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -54,10 +57,20 @@ trait PageTranslationTrait
     private ?string $content;
 
     /**
+     * @ORM\OneToMany(targetEntity=PageBlock::class, mappedBy="pageTranslation", orphanRemoval=true)
+     */
+    private $pageBlocks;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="translations")
      * @ORM\JoinColumn(nullable=false)
      */
     protected ?PageInterface $page;
+
+    public function __construct()
+    {
+        $this->pageBlocks = new ArrayCollection();
+    }
 
     public function __toString(): string
     {
@@ -144,6 +157,36 @@ trait PageTranslationTrait
     public function setContent(?string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PageBlock[]
+     */
+    public function getPageBlocks(): Collection
+    {
+        return $this->pageBlocks;
+    }
+
+    public function addPageBlock(PageBlock $pageBlock): self
+    {
+        if (!$this->pageBlocks->contains($pageBlock)) {
+            $this->pageBlocks[] = $pageBlock;
+            $pageBlock->setPageTranslation($this);
+        }
+
+        return $this;
+    }
+
+    public function removePageBlock(PageBlock $pageBlock): self
+    {
+        if ($this->pageBlocks->removeElement($pageBlock)) {
+            // set the owning side to null (unless already changed)
+            if ($pageBlock->getPageTranslation() === $this) {
+                $pageBlock->setPageTranslation(null);
+            }
+        }
 
         return $this;
     }
