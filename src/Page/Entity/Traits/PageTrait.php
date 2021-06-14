@@ -20,6 +20,20 @@ trait PageTrait
         $this->translations = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        $titles = [];
+        foreach ($this->getTranslations() as $translation) {
+            if ($translation->getTitle()){
+                $titles[] = $translation->getLocale() . ': ' . $translation->getTitle();
+            }
+        }
+        if ($titles){
+            return implode(' - ', $titles);
+        }
+        return 'No Title';
+    }
+
     public function getPage(): self
     {
         return $this;
