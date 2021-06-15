@@ -2,8 +2,8 @@
 
 namespace SweetSallyBe\DoctrineExtensions\Page\Form;
 
-use App\Entity\PageTranslation;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\TextEditorType;
+use SweetSallyBe\DoctrineExtensions\Page\Entity\Interfaces\PageTranslationInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,23 +24,36 @@ class PageTranslationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('locale', HiddenType::class)
-            ->add('title', TextType::class, ['label' => 'Title'])
+            ->add('locale', HiddenType::class, ['required' => true])
+            ->add(
+                'title',
+                TextType::class,
+                ['label'      => 'Title',
+                 'label_attr' => ['class' => 'required'],
+                 'attr'       => ['required' => 'required']
+                ]
+            )
             ->add(
                 'slug',
                 TextType::class,
-                ['label' => 'Slug',
-                 'attr'  => ['class' => 'convertDataList', 'data-list' => json_encode($this->getRoutes())]]
+                ['label'      => 'Slug',
+                 'label_attr' => ['class' => 'required'],
+                 'attr'       => ['class'     => 'convertDataList',
+                                  'data-list' => json_encode($this->getRoutes()),
+                                  'required'  => 'required']]
             )
-            ->add('htmlTitle', TextType::class, ['label' => 'HTML title'])
+            ->add(
+                'htmlTitle',
+                TextType::class,
+                ['label' => 'HTML title', 'label_attr' => ['class' => 'required'], 'attr' => ['required' => 'required']]
+            )
             ->add('description', TextareaType::class, ['label' => 'Description', 'required' => false])
             ->add('htmlDescription', TextareaType::class, ['label' => 'HTML Description', 'required' => false])
             ->add(
                 'content',
                 TextEditorType::class,
                 ['label' => 'Content of the page', 'required' => false]
-            )
-        ;
+            );
     }
 
 
@@ -48,7 +61,7 @@ class PageTranslationType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => PageTranslation::class,
+                'data_class' => PageTranslationInterface::class,
             ]
         );
     }

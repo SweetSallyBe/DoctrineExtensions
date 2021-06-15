@@ -2,8 +2,9 @@
 
 namespace SweetSallyBe\DoctrineExtensions\Page\Form;
 
-use App\Entity\Page;
 use App\Entity\PageTranslation;
+use SweetSallyBe\DoctrineExtensions\Page\Entity\Interfaces\PageInterface;
+use SweetSallyBe\DoctrineExtensions\Page\Service\FormPageSubscriber;
 use SweetSallyBe\Helpers\Service\Helper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,16 +32,17 @@ class PageType extends AbstractType
             $builder->add(
                 'translation_' . $language,
                 PageTranslationType::class,
-                ['data' => $pageTranslation, 'mapped' => false]
+                ['data' => $pageTranslation, 'mapped' => false, 'required' => true]
             );
         }
+        $builder->addEventSubscriber(new FormPageSubscriber());
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'data_class' => Page::class,
+                'data_class' => PageInterface::class,
             ]
         );
     }
