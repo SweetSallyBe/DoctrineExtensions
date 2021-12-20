@@ -8,21 +8,18 @@ use SweetSallyBe\Helpers\Entity\AbstractEntity;
 
 trait PageBlockTrait
 {
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $text;
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $text;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $image;
+    #[ORM\Column(type: "text", length: 255, nullable: true)]
+    private ?string $image;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=PageTranslation::class, inversedBy="PageBlocks")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $pageTranslation;
+    #[ORM\ManyToOne(targetEntity: "PageTranslation::class", inversedBy: "PageBlocks")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?PageTranslationInterface $pageTranslation;
+
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $url;
 
     public function getText(): ?string
     {
@@ -58,5 +55,15 @@ trait PageBlockTrait
         $this->pageTranslation = $pageTranslation;
 
         return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): void
+    {
+        $this->url = $url;
     }
 }
