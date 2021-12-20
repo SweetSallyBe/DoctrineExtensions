@@ -19,4 +19,7 @@ interface PageBlockInterface
     public function getPageTranslation(): ?PageTranslationInterface;
 
     public function setPageTranslation(?PageTranslationInterface $pageTranslation): self;
+
+    public function getUrl(): ?string;
+    public function setUrl(?string $url): void;
 }

@@ -62,8 +62,10 @@ trait PageBlockTrait
         return $this->url;
     }
 
-    public function setUrl(?string $url): void
+    public function setUrl(?string $url): self
     {
         $this->url = $url;
+        
+        return $this;
     }
 }
