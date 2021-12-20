@@ -11,18 +11,23 @@ trait PageBlockTrait
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $text;
+    private ?string $text;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $image;
+    private ?string $image;
 
     /**
      * @ORM\ManyToOne(targetEntity=PageTranslation::class, inversedBy="PageBlocks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $pageTranslation;
+    private ?PageTranslationInterface $pageTranslation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $url;
 
     public function getText(): ?string
     {
